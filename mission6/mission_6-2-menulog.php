@@ -18,9 +18,9 @@
                     $logpass=$_POST["logpass"];
                 //状態判定
                 if($_POST["login"]){
-                    $dsn='mysql:dbname=tb220531db;host=localhost';
-                    $user='tb-220531';
-                    $password='mTRmcFfg8Y';
+                    $dsn='mysql:dbname=*******;host=*******';
+                    $user='*******';
+                    $password='********';
                     $pdo=new PDO($dsn,$user,$password,array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_WARNING));
                 
                     //passとusernameがあっているか確認
