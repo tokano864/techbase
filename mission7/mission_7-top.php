@@ -57,21 +57,24 @@
     <!--カテゴリー一覧-->
     <section class="category">
         <div class="container">
+            <p class="category-title">カテゴリー一覧</p>
             <ul class="category-all">
                 <!--PHPにて表示-->
+                <li>カテゴリー</li>
             </ul>
         </div>
     </section>
     
     <div class="main">
         <section class="serch">
-            <!--投稿フォーム-->
+            <!--検索フォーム-->
             <form action="" class="serch">
                 <input type="text" name="serch">
                 <input type="submit">
             </form>
             <!--検索結果表示-->
                 <div class="serch-result">
+                    <p class="serch-title">検索結果</p>
                     <a href="#">料理名</a>
                     <p>投稿者</p>
                     <img src="#" alt="#" title="#"/>
