@@ -69,15 +69,15 @@
         <section class="serch">
             <!--検索フォーム-->
             <form action="" class="serch">
-                <input type="text" name="serch">
-                <input type="submit">
+                <input type="text" name="serch" class="serch-text">
+                <input type="submit" class="serch-btn">
             </form>
             <!--検索結果表示-->
                 <div class="serch-result">
                     <p class="serch-title">検索結果</p>
-                    <a href="#">料理名</a>
-                    <p>投稿者</p>
-                    <img src="#" alt="#" title="#"/>
+                    <a href="#" class="serch-food">料理名</a>
+                    <p class="serch-writer">投稿者</p>
+                    <img class="serch-img" src="#" alt="#" title="#"/>
                 </div>
             <form>
                 <!--PHPにて表示-->
@@ -87,28 +87,28 @@
             <div class="container">
                 <p class="latest-title">新着レシピ</p>
                 <!--1番最新-->
-                <form class="latest1">
-                    <p class="food1">
+                <form class="latest">
+                    <p class="food">
                         <a href="#">料理名1</a>
                     </p>
-                    <img src="#" alt="#" title="#/">
-                    <p class="writer1"></p>
+                    <img src="#" alt="#" title="#/">
+                    <p class="writer"></p>
                 </form>
                 <!--2番最新-->
-                <form class="latest2">
-                    <p class="food2">
+                <form class="latest">
+                    <p class="food">
                         <a href="#">料理名2</a>
                     </p>
-                    <img src="#" alt="#" title="#">
-                    <p class="writer2"></p>
+                    <img src="#" alt="#" title="#">
+                    <p class="writer"></p>
                 </form>
                 <!--3番最新-->
-                <form class="latest3">
-                    <p class="food3">
+                <form class="latest">
+                    <p class="food">
                         <a href="#">料理名3</a>
                     </p>
-                    <img src="#" alt="#" title="#">
-                    <p class="writer3"></p>
+                    <img src="#" alt="#" title="#">
+                    <p class="writer"></p>
                 </form>
             </div>
         </section>
