@@ -87,6 +87,7 @@
             <div class="container">
                 <form action="">
                     <input type="text" class="food-input">
+                    <input type="file" name="foodimg" class="food-img" accept="image/*">
                     <textarea class="recipe"></textarea>
                     <input type="text" class="food-category">
                     <input type="submit" class="recipebtn">
