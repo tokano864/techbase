@@ -83,7 +83,7 @@
                 <!--PHPにて表示-->
             </form>
         </section>
-        <section class="read">
+        <section class="write">
             <div class="container">
                 <form action="">
                     <input type="text" class="food-input">
