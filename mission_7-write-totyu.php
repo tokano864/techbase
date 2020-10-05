@@ -23,9 +23,9 @@
  
     <!--データベース接続およびお試しのための名前の宣言-->
         <?php
-            $dsn = 'mysql:dbname=tb220531db;host=localhost';
-	        $user = 'tb-220531';
-	        $password = 'mTRmcFfg8Y';
+            $dsn = 'mysql:dbname=******;host=localhost';
+	        $user = '*****';
+	        $password = '********';
 	        $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 
             //値の受け渡しがないのでとりあえず名無し太郎という投稿者名にする
