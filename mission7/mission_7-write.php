@@ -85,7 +85,7 @@
         </section>
         <section class="write">
             <div class="container">
-                <form action="">
+                <form action="" class="write-form">
                     <input type="text" class="food-input">
                     <input type="file" name="foodimg" class="food-img" accept="image/*">
                     <textarea class="recipe"></textarea>
