@@ -47,7 +47,7 @@
                     ."img BLOB,"
                     ."recipe TEXT,"
                     ."category char(32),"
-                    ."time DATETIME,"
+                    ."time DATE,"
                     ."ext VARCHAR(5)"
                     .")";
             $stmt=$pdo->query($sql);
@@ -102,10 +102,9 @@
 	                echo "<hr>";
 	                }	
             /*
-             //テーブル削除
-             $sql='DROP TABLE recipe';
-             $stmt=$ppdo->query($sql);
-             */
+             $sql='drop table recipe';
+            $stmt=$pdo->query($sql);
+	    */
           */
     ?>
 
