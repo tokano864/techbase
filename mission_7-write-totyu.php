@@ -23,8 +23,8 @@
  
     <!--データベース接続およびお試しのための名前の宣言-->
         <?php
-            $dsn = 'mysql:dbname=******;host=localhost';
-	        $user = '*****';
+            $dsn = 'mysql:dbname=*****;host=*******';
+	        $user = '******';
 	        $password = '********';
 	        $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 
@@ -47,9 +47,10 @@
                     ."img BLOB,"
                     ."recipe TEXT,"
                     ."category char(32),"
-                    ."time DATETIME,"
-                    ."ext varchar(5)"
+                    ."time DATE,"
+                    ."ext VARCHAR(5)"
                     .")";
+            $stmt=$pdo->query($sql);
     
         //ボタンが押されたとき
         if($_POST["write"]){
@@ -59,23 +60,22 @@
                 $recipe=$_POST["recipe"];   //レシピ(本文)
                 $foodcategory=$_POST["foodcategory"];   //カテゴリー
                 //画像の取得
-                    $upfile=$_FILES["img"]["tmp_name"];
+                    $upfile=$_FILES["foodimg"]["tmp_name"];
                     $img=file_get_contents($upfile);
                     $ext=pathinfo($upfile,PATHINFO_EXTENSION);
-            /*
-            //テーブルへ入力
-                $sql="INSERT INTO recipe (name,food,img,recipe,category,time,ext)
-                        VALUE (:name,:food,:img,:recipe,:category,now(),:ext)";    
-                $sql->bindParam(':name',$name,PDO::PARAM_STR);
-                $sql->bindParam(':food',$food,PDO::PARAM_STR);
-                $sql->bindParam(':recipe',$recipe,PDO::PARAM_STR);
-                $sql->bindParam(':category',$foodcategory,PDO::PARAM_STR);
-                $sql->bindParam(':ext',$ext);
-                $sql->bindParam(':img',$img);
             
-            *//*
-          //動作確認    
-            //表示
+            //データの入力
+            $sql=$pdo->prepare("INSERT INTO recipe (name,food,img,recipe,category,time,ext)
+                                VALUES (:name,:food,:img,:recipe,:category,now(),:ext)");
+            $sql->bindParam(':name',$name,PDO::PARAM_STR);
+            $sql->bindParam(':food',$food,PDO::PARAM_STR);
+            $sql->bindParam(':img',$img);
+            $sql->bindParam(':recipe',$recipe,PDO::PARAM_STR);
+            $sql->bindParam(':category',$category,PDO::PARAM_STR);
+            $sql->bindParam(':ext',$ext);
+            $sql->execute();
+         /*   ここから先はうまくできているかのテスト用
+            //テーブル表示
             $contents_type=array(
                 'jpg' => 'image/jpeg',
                 'jpeg' => 'image/jpeg',
@@ -83,29 +83,32 @@
                 'gif' => 'image/gif',
                 'bmp' => 'image/bmp',
                 );
-            $sql='SELECT * FROM recipe';
-            $stmt=$pdo->query($sql);
-            $results=$stmt->fetchObject();
-            foreach($results as $row){
-                echo $row->id;
-                echo $row->name;
-                echo $row->food;
-                echo $row->recipe;
-                echo $row->category;
-                echo $row->time;
-                header('Content-type:'.$contents_type[$row->ext]);
-                echo $row->contents;
-            }
-            */
-            /* 
-             //テーブル削除
-             $sql='DROP TABLE recipe';
-             $stmt=$ppdo->query($sql);
-             */
+            
          }
+         $sql = 'SELECT * FROM recipe';
+	            $stmt = $pdo->query($sql);
+	            $results = $stmt->fetchAll();
+	            foreach ($results as $row){
+		          //$rowの中にはテーブルのカラム名が入る
+		            echo $row['id'].',';
+		            echo $row['name'].',';
+		            echo $row['category'];
+		            echo $row['recipe'];
+		            echo $row['time'];
+		            echo $row['ext'];
+		            header('Content-type:'.$contents_type[$row['ext']]);
+		            
+		            echo "<br>";
+	                echo "<hr>";
+	                }	
+            /*
+             $sql='drop table recipe';
+            $stmt=$pdo->query($sql);
+	    */
+          */
     ?>
 
-
+    
     <!--メニューバー-->
     <header class="top">
         <div class="container">
@@ -169,7 +172,7 @@
                 <!--PHPにて表示-->
             </form>
         </section>
-        <section class="write-form">
+        <section class="write">
             <div class="container">
                 <form action="" method="post" enctype="multipart/form-data" class="write-form">
                     <!--foodnameは名前、foodは料理名、foodimgは画像、
