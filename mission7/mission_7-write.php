@@ -19,7 +19,97 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
  
+    <!--ログインしているかどうか判定、-->
+ 
+    <!--データベース接続およびお試しのための名前の宣言-->
+        <?php
+            $dsn = 'mysql:dbname=*****;host=*******';
+	        $user = '******';
+	        $password = '********';
+	        $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 
+            //値の受け渡しがないのでとりあえず名無し太郎という投稿者名にする
+                $name="名無し太郎";
+        ?>
+        
+    <!--検索機能-->
+
+    <!--カテゴリー一覧表示機能-->
+
+    <!--投稿機能-->
+    <?php
+        //テーブル作成
+            $sql="CREATE TABLE IF NOT EXISTS recipe"
+                    ."("
+                    ."id INT AUTO_INCREMENT PRIMARY KEY,"
+                    ."name char(32),"
+                    ."food TEXT,"
+                    ."img BLOB,"
+                    ."recipe TEXT,"
+                    ."category char(32),"
+                    ."time DATETIME,"
+                    ."ext VARCHAR(5)"
+                    .")";
+            $stmt=$pdo->query($sql);
+    
+        //ボタンが押されたとき
+        if($_POST["write"]){
+            //formから投稿する内容を取得
+                $name=$_POST["name"];   //投稿者
+                $food=$_POST["food"];   //料理名
+                $recipe=$_POST["recipe"];   //レシピ(本文)
+                $foodcategory=$_POST["foodcategory"];   //カテゴリー
+                //画像の取得
+                    $upfile=$_FILES["foodimg"]["tmp_name"];
+                    $img=file_get_contents($upfile);
+                    $ext=pathinfo($upfile,PATHINFO_EXTENSION);
+            
+            //データの入力
+            $sql=$pdo->prepare("INSERT INTO recipe (name,food,img,recipe,category,time,ext)
+                                VALUES (:name,:food,:img,:recipe,:category,now(),:ext)");
+            $sql->bindParam(':name',$name,PDO::PARAM_STR);
+            $sql->bindParam(':food',$food,PDO::PARAM_STR);
+            $sql->bindParam(':img',$img);
+            $sql->bindParam(':recipe',$recipe,PDO::PARAM_STR);
+            $sql->bindParam(':category',$category,PDO::PARAM_STR);
+            $sql->bindParam(':ext',$ext);
+            $sql->execute();
+         /*   ここから先はうまくできているかのテスト用
+            //テーブル表示
+            $contents_type=array(
+                'jpg' => 'image/jpeg',
+                'jpeg' => 'image/jpeg',
+                'png' => 'image/png',
+                'gif' => 'image/gif',
+                'bmp' => 'image/bmp',
+                );
+            
+         }
+         $sql = 'SELECT * FROM recipe';
+	            $stmt = $pdo->query($sql);
+	            $results = $stmt->fetchAll();
+	            foreach ($results as $row){
+		          //$rowの中にはテーブルのカラム名が入る
+		            echo $row['id'].',';
+		            echo $row['name'].',';
+		            echo $row['category'];
+		            echo $row['recipe'];
+		            echo $row['time'];
+		            echo $row['ext'];
+		            header('Content-type:'.$contents_type[$row['ext']]);
+		            
+		            echo "<br>";
+	                echo "<hr>";
+	                }	
+            /*
+             //テーブル削除
+             $sql='DROP TABLE recipe';
+             $stmt=$ppdo->query($sql);
+             */
+          */
+    ?>
+
+    
     <!--メニューバー-->
     <header class="top">
         <div class="container">
@@ -85,12 +175,15 @@
         </section>
         <section class="write">
             <div class="container">
-                <form action="" class="write-form">
-                    <input type="text" class="food-input">
+                <form action="" method="post" enctype="multipart/form-data" class="write-form">
+                    <!--foodnameは名前、foodは料理名、foodimgは画像、
+                        recipeはレシピ(本文)、foodcategoryはカテゴリー-->
+                    <input type="text" name="name" value="<?php echo $name;?>">
+                    <input type="text" name="food" class="food-input">
                     <input type="file" name="foodimg" class="food-img" accept="image/*">
-                    <textarea class="recipe"></textarea>
-                    <input type="text" class="food-category">
-                    <input type="submit" class="recipebtn">
+                    <textarea name="recipe" class="recipe"></textarea>
+                    <input type="text" name="foodcategory" class="food-category">
+                    <input type="submit" name="write" class="recipebtn">
                 </form>
             </div>
         </section>
