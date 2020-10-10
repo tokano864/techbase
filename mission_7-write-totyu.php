@@ -23,9 +23,9 @@
  
     <!--データベース接続およびお試しのための名前の宣言-->
         <?php
-            $dsn = 'mysql:dbname=*******;host=*******';
-	        $user = '********';
-	        $password = '********';
+            $dsn = 'mysql:dbname=*****;host=*******';
+	        $user = '*****';
+	        $password = '*********';
 	        $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 
             //値の受け渡しがないのでとりあえず名無し太郎という投稿者名にする
@@ -39,12 +39,12 @@
 
     <!--投稿機能-->
     <?php
-        //テーブル作成
+        //テーブル作成(recipe)
             $sql="CREATE TABLE IF NOT EXISTS recipe"
                     ."("
                     ."id INT AUTO_INCREMENT PRIMARY KEY,"
-                    ."userid INT,"
-                    ."name char(32),"
+                    ."user_id INT,"
+                    ."user_name char(32),"
                     ."food TEXT,"
                     ."recipe TEXT,"
                     ."category ENUM('イタリアン','トルコ料理','日本食','中華料理','フランス料理','韓国料理','インド料理','その他'),"
@@ -60,47 +60,36 @@
                 $food=$_POST["food"];   //料理名
                 $recipe=$_POST["recipe"];   //レシピ(本文)
                 $foodcategory=$_POST["foodcategory"];   //カテゴリー
-                //画像の取得
-                    $upfile=$_FILES["foodimg"]["tmp_name"];
-                    $img=file_get_contents($upfile);
-                    $ext=pathinfo($upfile,PATHINFO_EXTENSION);
-            echo $foodcategory;
+        
             //データの入力
-            $sql=$pdo->prepare("INSERT INTO recipe (userid,name,food,recipe,category,time)
-                                VALUES (:userid,:name,:food,:recipe,:category,now())");
-            $sql->bindParam(':userid',$userid,PDO::PARAM_INT);
-            $sql->bindParam(':name',$name,PDO::PARAM_STR);
+            $sql=$pdo->prepare("INSERT INTO recipe (user_id,user_name,food,recipe,category,time)
+                                VALUES (:user_id,:user_name,:food,:recipe,:category,now())");
+            $sql->bindParam(':user_id',$userid,PDO::PARAM_INT);
+            $sql->bindParam(':user_name',$name,PDO::PARAM_STR);
             $sql->bindParam(':food',$food,PDO::PARAM_STR);
             $sql->bindParam(':recipe',$recipe,PDO::PARAM_STR);
             $sql->bindParam(':category',$foodcategory,PDO::PARAM_STR);
             $sql->execute();
+        
+        
         }
-         /*   ここから先はうまくできているかのテスト用
-            //テーブル表示
-            $contents_type=array(
-                'jpg' => 'image/jpeg',
-                'jpeg' => 'image/jpeg',
-                'png' => 'image/png',
-                'gif' => 'image/gif',
-                'bmp' => 'image/bmp',
-                );
-            
-         }*/
+	       
          $sql = 'SELECT * FROM recipe';
 	            $stmt = $pdo->query($sql);
 	            $results = $stmt->fetchAll();
 	            foreach ($results as $row){
 		          //$rowの中にはテーブルのカラム名が入る
 		            echo $row['id'].',';
-		            echo $row['userid'].',';
-		            echo $row['name'].',';
+		            echo $row['user_id'].',';
+		            echo $row['user_name'].',';
 		            echo $row['category'];
 		            echo $row['recipe'];
 		            echo $row['time'];
-		            
 		            echo "<br>";
 	                echo "<hr>";
 	                }	
+	                
+	  
             /*
              $sql='drop table recipe';
             $stmt=$pdo->query($sql);
