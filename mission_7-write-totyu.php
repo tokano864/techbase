@@ -23,13 +23,14 @@
  
     <!--データベース接続およびお試しのための名前の宣言-->
         <?php
-            $dsn = 'mysql:dbname=*****;host=*******';
-	        $user = '******';
-	        $password = '********';
+            $dsn = 'mysql:dbname=tb220531db;host=localhost';
+	        $user = 'tb-220531';
+	        $password = 'mTRmcFfg8Y';
 	        $pdo = new PDO($dsn, $user, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING));
 
             //値の受け渡しがないのでとりあえず名無し太郎という投稿者名にする
                 $name="名無し太郎";
+                $userid=1;
         ?>
         
     <!--検索機能-->
@@ -42,19 +43,19 @@
             $sql="CREATE TABLE IF NOT EXISTS recipe"
                     ."("
                     ."id INT AUTO_INCREMENT PRIMARY KEY,"
+                    ."userid INT,"
                     ."name char(32),"
                     ."food TEXT,"
-                    ."img BLOB,"
                     ."recipe TEXT,"
-                    ."category char(32),"
-                    ."time DATE,"
-                    ."ext VARCHAR(5)"
+                    ."category ENUM('イタリアン','トルコ料理','日本食','中華料理','フランス料理','韓国料理','インド料理','その他'),"
+                    ."time DATE"
                     .")";
             $stmt=$pdo->query($sql);
     
         //ボタンが押されたとき
         if($_POST["write"]){
             //formから投稿する内容を取得
+                $userid=$_POST["userid"];
                 $name=$_POST["name"];   //投稿者
                 $food=$_POST["food"];   //料理名
                 $recipe=$_POST["recipe"];   //レシピ(本文)
@@ -63,17 +64,17 @@
                     $upfile=$_FILES["foodimg"]["tmp_name"];
                     $img=file_get_contents($upfile);
                     $ext=pathinfo($upfile,PATHINFO_EXTENSION);
-            
+            echo $foodcategory;
             //データの入力
-            $sql=$pdo->prepare("INSERT INTO recipe (name,food,img,recipe,category,time,ext)
-                                VALUES (:name,:food,:img,:recipe,:category,now(),:ext)");
+            $sql=$pdo->prepare("INSERT INTO recipe (userid,name,food,recipe,category,time)
+                                VALUES (:userid,:name,:food,:recipe,:category,now())");
+            $sql->bindParam(':userid',$userid,PDO::PARAM_INT);
             $sql->bindParam(':name',$name,PDO::PARAM_STR);
             $sql->bindParam(':food',$food,PDO::PARAM_STR);
-            $sql->bindParam(':img',$img);
             $sql->bindParam(':recipe',$recipe,PDO::PARAM_STR);
-            $sql->bindParam(':category',$category,PDO::PARAM_STR);
-            $sql->bindParam(':ext',$ext);
+            $sql->bindParam(':category',$foodcategory,PDO::PARAM_STR);
             $sql->execute();
+        }
          /*   ここから先はうまくできているかのテスト用
             //テーブル表示
             $contents_type=array(
@@ -84,19 +85,18 @@
                 'bmp' => 'image/bmp',
                 );
             
-         }
+         }*/
          $sql = 'SELECT * FROM recipe';
 	            $stmt = $pdo->query($sql);
 	            $results = $stmt->fetchAll();
 	            foreach ($results as $row){
 		          //$rowの中にはテーブルのカラム名が入る
 		            echo $row['id'].',';
+		            echo $row['userid'].',';
 		            echo $row['name'].',';
 		            echo $row['category'];
 		            echo $row['recipe'];
 		            echo $row['time'];
-		            echo $row['ext'];
-		            header('Content-type:'.$contents_type[$row['ext']]);
 		            
 		            echo "<br>";
 	                echo "<hr>";
@@ -105,7 +105,7 @@
              $sql='drop table recipe';
             $stmt=$pdo->query($sql);
 	    */
-          */
+        
     ?>
 
     
@@ -178,10 +178,20 @@
                     <!--foodnameは名前、foodは料理名、foodimgは画像、
                         recipeはレシピ(本文)、foodcategoryはカテゴリー-->
                     <input type="text" name="name" value="<?php echo $name;?>">
+                     <input type="text" name="userid" value="<?php echo $userid;?>">
                     <input type="text" name="food" class="food-input">
                     <input type="file" name="foodimg" class="food-img" accept="image/*">
                     <textarea name="recipe" class="recipe"></textarea>
-                    <input type="text" name="foodcategory" class="food-category">
+                    <select class="food-category" name="foodcategory">
+                        <option value='イタリアン'>イタリアン</option>
+                        <option value='トルコ料理'>トルコ料理</option>
+                        <option value='日本食'>日本食</option>
+                        <option value='中華料理'>中華料理</option>
+                        <option value='フランス料理'>フランス料理</option>
+                        <option value='韓国料理'>韓国料理</option>
+                        <option value='インド料理'>インド料理</option>
+                        <option value='その他'>その他</option>
+                    </select>
                     <input type="submit" name="write" class="recipebtn">
                 </form>
             </div>
