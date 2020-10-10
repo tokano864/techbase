@@ -91,7 +91,7 @@
                     <p class="food">
                         <a href="#">料理名1</a>
                     </p>
-                    <img src="#" alt="#" title="#/">
+                    <img src="#" alt="#" title="#/">
                     <p class="writer"></p>
                 </form>
                 <!--2番最新-->
@@ -99,7 +99,7 @@
                     <p class="food">
                         <a href="#">料理名2</a>
                     </p>
-                    <img src="#" alt="#" title="#">
+                    <img src="#" alt="#" title="#">
                     <p class="writer"></p>
                 </form>
                 <!--3番最新-->
@@ -107,7 +107,7 @@
                     <p class="food">
                         <a href="#">料理名3</a>
                     </p>
-                    <img src="#" alt="#" title="#">
+                    <img src="#" alt="#" title="#">
                     <p class="writer"></p>
                 </form>
             </div>
