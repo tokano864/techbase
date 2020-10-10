@@ -98,7 +98,7 @@
                         <option value='インド料理'>インド料理</option>
                         <option value='その他'>その他</option>
                     </select>
-                    <input type="submit" name="write" class="recipebtn">
+                    <input type="submit" name="write" class="recipe-btn">
                 </form>
             </div>
         </section>
