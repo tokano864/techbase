@@ -88,7 +88,16 @@
                     <input type="text" name="food" class="food-input">
                     <input type="file" name="foodimg" class="food-img" accept="image/*">
                     <textarea name="recipe" class="recipe"></textarea>
-                    <input type="text" name="foodcategory" class="food-category">
+                    <select class="food-category" name="foodcategory">
+                        <option value='イタリアン'>イタリアン</option>
+                        <option value='トルコ料理'>トルコ料理</option>
+                        <option value='日本食'>日本食</option>
+                        <option value='中華料理'>中華料理</option>
+                        <option value='フランス料理'>フランス料理</option>
+                        <option value='韓国料理'>韓国料理</option>
+                        <option value='インド料理'>インド料理</option>
+                        <option value='その他'>その他</option>
+                    </select>
                     <input type="submit" name="write" class="recipebtn">
                 </form>
             </div>
