@@ -11,8 +11,8 @@
             
             //DB接続
             $dsn='mysql:dbname=******;host=******';
-            $user='******';
-            $dbpass='******';
+            $user='********';
+            $dbpass='********';
             $pdo=new PDO($dsn,$user,$dbpass,
                     array(PDO::ATTR_ERRMODE=>PDO::ERRMODE_WARNING));
                     
